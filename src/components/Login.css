@@ -1,0 +1,110 @@
+.login-wrapper {
+  height: 100vh;
+  width: 100%;
+  background-color: rgb(7, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px; /* Add padding for smaller screens */
+}
+
+.login-container {
+  height: auto; /* Adjust height to auto for mobile */
+  width: 100%; /* Full width for mobile */
+  max-width: 600px; /* Limit width on larger screens */
+  background-color: #eee;
+  box-shadow: 5px 5px 10px #8f2222;
+  display: flex;
+  flex-direction: column; /* Stack columns on mobile */
+}
+
+.login-boxes {
+  height: auto; /* Adjust height to auto for mobile */
+  width: 100%; /* Full width for mobile */
+  background-color: rgb(234, 215, 215);
+  padding: 20px;
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.login-left {
+  background-image: url("../components/asstes/invoice.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 200px; /* Fixed height for mobile */
+  width: 100%; /* Full width for mobile */
+}
+
+.login-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-heading {
+  font-size: 20px; /* Smaller font size for mobile */
+}
+
+.login-input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border-width: 2px;
+}
+
+.login-btn {
+  width: 100%; /* Full width for mobile */
+  padding: 10px; /* Increase padding for better touch targets */
+  margin-top: 15px; /* Add margin for better spacing */
+  border: none;
+  background-color: blue;
+  color: white;
+  font-size: 15px;
+  align-content: center;
+}
+
+.login-btn:hover {
+  background-color: #e71e1e;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.register-link {
+  font-size: 16px; /* Slightly smaller for mobile */
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.image-preview {
+  height: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+@media (min-width: 768px) {
+  /* Styles for larger screens */
+  .login-container {
+    flex-direction: row; /* Side by side on larger screens */
+    height: 600px; /* Fixed height on larger screens */
+    width: 60%; /* Custom width for larger screens */
+  }
+
+  .login-boxes {
+    height: 600px; /* Fixed height on larger screens */
+    width: 50%; /* Custom width for larger screens */
+  }
+
+  .login-left {
+    width: 50%; /* Custom width for larger screens */
+  }
+
+  .login-heading {
+    font-size: 25px; /* Larger font size for desktop */
+  }
+
+  .login-btn {
+    width: auto; /* Auto width for larger screens */
+  }
+}
