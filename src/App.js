@@ -9,6 +9,7 @@ import { NewInvoice } from './components/NewInvoice';
 import { Home } from './components/Home';
 import { InvoiceDetails } from './components/InvoiceDetails';
 import { UpdateFile } from './components/UpdateFile';
+import EmailForm from './components/EmailForm';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path='/invoice' element={<Invoice />} />
           <Route path='/newinvoice' element={<NewInvoice />} />
           <Route path='/home' element={<Home />} />
+          <Route path='/emailform' element={<EmailForm/>} />
         </Routes>
       </Router>
     </div>

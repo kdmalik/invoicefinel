@@ -4,13 +4,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { storage } from "../firebase.js"; // import Firebase storage
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
-import emailjs from "emailjs-com"; // import EmailJS
+import { useNavigate } from "react-router-dom";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Import spinner icon
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const InvoiceDetails = () => {
   const location = useLocation();
   const { state } = location;
   const [data, setData] = useState(null);
   const invoiceRef = useRef(null);
+  const [isLoading,setLoading] = useState(false)
+  const navigate = useNavigate();
+  
 
   useEffect(() => {
     const fetchInvoiceData = async () => {
@@ -133,6 +138,7 @@ export const InvoiceDetails = () => {
   };
 
   const printInvoice = () => {
+    
     const input = invoiceRef.current;
     html2canvas(input).then((canvas) => {
       const imageData = canvas.toDataURL("image/png", 1.0);
@@ -148,54 +154,32 @@ export const InvoiceDetails = () => {
 
       pdf.addImage(imageData, "PNG", 0, 0, pdfwidth, pdfHight);
       pdf.save("invoice" + new Date());
+      
     });
   };
-
+  
   const sendEmailWithInvoice = () => {
+    setLoading(true)
     const input = invoiceRef.current;
     html2canvas(input).then((canvas) => {
       const imageData = canvas.toDataURL("image/png", 1.0);
       const storageRef = ref(storage, `invoices/${data.invoiceNo}.png`);
-
+  
       uploadString(storageRef, imageData, "data_url")
         .then(() => {
           return getDownloadURL(storageRef);
         })
         .then((downloadURL) => {
-      
-          const emailParams = {
-            to_email: data.billedTo.email, 
-            from_name: data.companyName,
-            subject: `Invoice #${data.invoiceNo}`,
-            message: `Please find your invoice attached. You can also download it from the following link: ${downloadURL}`,
-          };
-
-          
-          emailjs
-            .send(
-              "service_g2348sh",
-              "template_ori725j", 
-              emailParams,
-              "ErJHgIM8qLrffa_RT"
-            )
-            .then((response) => {
-              console.log(
-                "Email sent successfully!",
-                response.status,
-                response.text
-              );
-              alert("Email sent Succesfully");
-            })
-            .catch((error) => {
-              console.error("Failed to send email:", error);
-            });
+          navigate("/emailform", {
+            state: { data, downloadURL },
+          });
         })
         .catch((error) => {
           console.error("Error uploading image to Firebase:", error);
+          setLoading(false)
         });
     });
   };
-
   return (
     <div>
       <div className="invoice-top-header" >
@@ -203,6 +187,11 @@ export const InvoiceDetails = () => {
           Print
         </button>
         <button onClick={sendEmailWithInvoice} className="email-btn print-btn" style={{margin:5}}>
+        {isLoading ? (
+                <FontAwesomeIcon icon={faSpinner} spin /> // Show spinner when loading
+              ) : (
+                " "
+              )}
           Send Email
         </button>
       </div>

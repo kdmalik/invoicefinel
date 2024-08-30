@@ -5,6 +5,8 @@ import { auth, storage, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Import spinner icon
 
 export const Register = () => {
   const inputlogo = useRef(null);
@@ -14,6 +16,7 @@ export const Register = () => {
   const [displayName, setDisplayName] = useState("");
   const [file, setFile] = useState(null);
   const [imagUrl,setImageUrl] =useState(null)
+  const [isLoading,setLoading] =useState(false)
 
   const navigate = useNavigate();
 
@@ -24,6 +27,7 @@ export const Register = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setLoading(true)
     console.log(email, password);
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -52,11 +56,13 @@ export const Register = () => {
             localStorage.setItem("photoURL", downloadedUrl);
             localStorage.setItem("email", newuser.user.email);
             localStorage.setItem("uid",newuser.user.uid);
+            setLoading(false)
           });
         });
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false)
       });
   };
 
@@ -74,15 +80,18 @@ export const Register = () => {
               className="login-input"
               type="text"
               placeholder="Email"
+              required
             />
 
             <input
+              
               onChange={(e) => {
                 setDisplayName(e.target.value);
               }}
               className="login-input"
               type="text"
               placeholder="Company Name"
+              required
             />
             <input
               onChange={(e) => {
@@ -91,8 +100,10 @@ export const Register = () => {
               className="login-input"
               type="password"
               placeholder="Password"
+              required
             />
             <input
+              
               onChange={(e) => {
                 onSelectFile(e)
               }}
@@ -108,9 +119,16 @@ export const Register = () => {
               onClick={() => {
                 inputlogo.current.click();
               }}
+              
             />
             {imagUrl != null && <img className="image-preview" src={imagUrl} alt="preview" />}
-            <input className="login-input login-btn" type="submit" />
+            <button className="login-input login-btn" type="submit" disabled={isLoading} >
+            {isLoading? (
+                <FontAwesomeIcon icon={faSpinner} spin /> // Show spinner when loading
+              ) : (
+                "Submit"
+              )}
+              </button>
           </form>
           <Link to="/login" className="register-link">
             Login With Your Account

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { db } from "../firebase";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'; // Import spinner icon
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const NewInvoice = () => {
   const [invoiceNo, setInvoiceNo] = useState("");
@@ -32,7 +34,7 @@ export const NewInvoice = () => {
   const [taxableAmount, setTaxableAmount] = useState(0);
   const [totalTax, setTotalTax] = useState(0);
   const [terms, setTerms] = useState("1. Interest @ 18% p.a. will be charged if the payment is not made within the stipulated time. \n2. Subject to 'Delhi' Jurisdiction only.");
-
+  const [isLoading,setLoading] = useState(false)
   const navigate = useNavigate();
 
   const addProduct = () => {
@@ -54,11 +56,14 @@ export const NewInvoice = () => {
   };
 
   const saveData = async () => {
+    setLoading(true)
+    
     if (invoiceNo === "" || billedToName === "" || products.length === 0) {
       alert("Please fill in all fields before saving.");
       return;
+      
     }
-
+    
     const data = {
       invoiceNo,
       invoiceDate,
@@ -92,15 +97,24 @@ export const NewInvoice = () => {
     };
    
     await addDoc(collection(db, "invoices"), data);
-
+   
     navigate("/dashboard/invoice");
+    setLoading(false)
+    
+
   };
   
   return (
     <div className="p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">New Invoice</h2>
-        <button onClick={saveData} className="bg-blue-500 text-white px-4 py-2 rounded">Save Data</button>
+        <button onClick={saveData} className="bg-blue-500 text-white px-4 py-2 rounded">
+        {isLoading ? (
+                <FontAwesomeIcon icon={faSpinner} spin /> // Show spinner when loading
+              ) : (
+                " "
+              )}
+          Save Data</button>
       </div>
       <form className="space-y-4 mt-4">
         <div className="grid grid-cols-2 gap-4">
@@ -133,7 +147,7 @@ export const NewInvoice = () => {
  
         <h3 className="text-md font-medium">Product Details</h3>
         <div className="grid grid-cols-2 gap-4">
-          <input onChange={(e) => setResource(e.target.value)} placeholder="Resource" value={resource} className="border p-2" />
+          <input onChange={(e) => setResource(e.target.value)} placeholder="Item Name" value={resource} className="border p-2" />
           <input onChange={(e) => setAmount(e.target.value)} placeholder="Amount" value={amount} className="border p-2" />
          
         </div>

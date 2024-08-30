@@ -32,15 +32,15 @@ export const Setting = () => {
     setFile(e.target.files[0]);
     setImageUrl(URL.createObjectURL(e.target.files[0]));
   };
-
   const updateLogo = () => {
     if (!file) return;
-
-    const fileName = `${localStorage.getItem("uid")}${file.name}`;
+  
+    // Create a consistent file path using the user ID
+    const fileName = `${localStorage.getItem("cName")}/profilePicture.jpg`;
     const storageRef = ref(storage, fileName);
-
+  
     const uploadTask = uploadBytesResumable(storageRef, file);
-
+  
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -52,7 +52,7 @@ export const Setting = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadedURL) => {
           const user = auth.currentUser; // Get the current user object
-
+  
           if (user) {
             // Update the user's profile with the new photoURL
             updateProfile(user, {
@@ -76,11 +76,11 @@ export const Setting = () => {
           } else {
             console.error("No user is signed in.");
           }
-
         });
       }
     );
   };
+  
 
   return (
     <div >
