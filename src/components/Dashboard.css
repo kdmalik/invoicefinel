@@ -520,6 +520,10 @@ textarea {
 /* Menu Styles */
 .menu {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 30%;
 }
 
 .menu-link {
