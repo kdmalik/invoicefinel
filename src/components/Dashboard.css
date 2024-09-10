@@ -293,7 +293,7 @@ background-color: rgb(241, 226, 226);
   width: 50%;
   padding: 10px;
 }
-/* SETTING CSS */
+
 .setting-wrapper
 {
   display: flex;
@@ -302,6 +302,7 @@ background-color: rgb(241, 226, 226);
   margin: auto;
   background-color: rgb(232, 209, 209);
   margin-top: 50px;
+  border-radius: 10px;
 
 }
 
@@ -320,16 +321,18 @@ background-color: rgb(241, 226, 226);
 {
   width: 80%;
   padding: 10px;
+  border-radius: 10px;
 
 
 }
 .update-cName button
 {
   width:80% ;
-  padding: 5%;
+  padding: 4%;
   border: none;
   background-color: blue;
   color: #fdfafa;
+  border-radius: 10px;
 }   
 
 
@@ -521,7 +524,7 @@ textarea {
 
 .menu-link {
   display: block;
-  padding: 12px 0;
+  padding: 12px 20%;
   text-align: center;
   font-size: 16px;
   color: #ecf0f1;

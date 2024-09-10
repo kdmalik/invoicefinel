@@ -105,7 +105,7 @@ export const NewInvoice = () => {
   };
   
   return (
-    <div className="p-4">
+    <div className="p-4 bg-red-100">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">New Invoice</h2>
         <button onClick={saveData} className="bg-blue-500 text-white px-4 py-2 rounded">
@@ -172,10 +172,10 @@ export const NewInvoice = () => {
           </div>
         )}
 
-        <div className="mt-4">
-          <h3 className="text-md font-medium">Additional Information</h3>
+        <div className="mt-4 ">
+          <h3 className="text-md font-medium ">Additional Information</h3>
           <input onChange={(e) => setHsnSacCode(e.target.value)} placeholder="HSN/SAC Code" value={hsnSacCode} className="border p-2 w-full" />
-          <textarea onChange={(e) => setTerms(e.target.value)} placeholder="Terms & Conditions" value={terms} className="border p-2 w-full mt-2"></textarea>
+          <textarea onChange={(e) => setTerms(e.target.value)} placeholder="Terms & Conditions" value={terms} className="border p-2 w-full mt-2 "></textarea>
         </div>
       </form>
     </div>

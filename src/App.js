@@ -22,6 +22,7 @@ function App() {
           <Route path='/register' element={<Register />} />
 
           <Route path='/dashboard' element={<Dashboard />}>
+           
             <Route path='home' element={<Home />} />
             <Route path='invoice' element={<Invoice />} />
             <Route path='newinvoice' element={<NewInvoice />} />

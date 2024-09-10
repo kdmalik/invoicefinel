@@ -51,7 +51,7 @@ export const InvoiceDetails = () => {
   const grandTotal = subtotal + data.totalTax;
 
   // Function to convert number to words (same as before)
-  const numberToWords = (num) => {
+  const numberToWordsIndian = (num) => {
     const a = [
       "",
       "One",
@@ -89,58 +89,61 @@ export const InvoiceDetails = () => {
     const g = [
       "",
       "Thousand",
-      "Million",
-      "Billion",
-      "Trillion",
-      "Quadrillion",
-      "Quintillion",
+      "Lakh",
+      "Crore",
     ];
-
+  
     if (typeof num !== "number" || num < 0) return "Invalid input";
-
+  
     if (num === 0) return "Zero";
-
+  
     let words = "";
     let number = num.toString();
     let start = number.length;
     let chunks = [];
-
+  
+    // Splitting number into chunks for the Indian numbering system
     while (start > 0) {
-      const end = Math.max(start - 3, 0);
+      const end = Math.max(start - (chunks.length === 0 ? 3 : 2), 0);
       chunks.unshift(number.slice(end, start));
       start = end;
     }
-
+  
     for (let i = 0; i < chunks.length; i++) {
-      let chunk = parseInt(chunks[i]);
-
+      let chunk = parseInt(chunks[i], 10);
+  
       if (chunk) {
         let chunkWords = "";
-
+  
+        // Handling hundreds place
         if (chunk > 99) {
-          chunkWords += a[Math.floor(chunk / 100)] + "  ";
+          chunkWords += a[Math.floor(chunk / 100)] + " Hundred ";
           chunk %= 100;
         }
+  
+        // Handling tens and units place
         if (chunk > 19) {
           chunkWords += b[Math.floor(chunk / 10)] + " ";
           chunk %= 10;
         }
-
+  
+        // Handling numbers from 1 to 19
         if (chunk > 0) {
           chunkWords += a[chunk] + " ";
         }
-
-        words += chunkWords + g[chunks.length - 1 - i] + " ";
+  
+        words += chunkWords + (g[chunks.length - 1 - i] ? g[chunks.length - 1 - i] + " " : "");
       }
     }
-
+  
     return words.trim() + " Only";
   };
+  
 
   const printInvoice = () => {
     
     const input = invoiceRef.current;
-    html2canvas(input).then((canvas) => {
+    html2canvas(input,{useCORS:true}).then((canvas) => {
       const imageData = canvas.toDataURL("image/png", 1.0);
       const pdf = new jsPDF({
         orientation: "portrait",
@@ -161,7 +164,7 @@ export const InvoiceDetails = () => {
   const sendEmailWithInvoice = () => {
     setLoading(true)
     const input = invoiceRef.current;
-    html2canvas(input).then((canvas) => {
+    html2canvas(input,{useCORS:true}).then((canvas) => {
       const imageData = canvas.toDataURL("image/png", 1.0);
       const storageRef = ref(storage, `invoices/${data.invoiceNo}.png`);
   
@@ -356,7 +359,7 @@ export const InvoiceDetails = () => {
                   </div>
                 </div>
                 <div className="flex item-start mt-5">
-                  <p className="font-semibold">{numberToWords(grandTotal)}</p>
+                  <p className="font-semibold">{numberToWordsIndian(grandTotal)}</p>
                 </div>
               </td>
               <td className="flex items-center flex-col">
