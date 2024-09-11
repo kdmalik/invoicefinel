@@ -149,8 +149,9 @@ export const Invoice = () => {
           disabled={selectedInvoices.length === 0}
         >
           Delete Selected
+          
         </button>
-        
+        <p>&nbsp;</p>
         <button 
           onClick={downloadPDF}
           className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200"
