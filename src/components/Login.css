@@ -75,6 +75,9 @@
   margin-top: 10px;
   text-decoration: none;
 }
+.register-link:hover {
+  color: #0600b3;
+}
 
 .image-preview {
   height: 50px;

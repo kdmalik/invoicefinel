@@ -86,19 +86,17 @@ export const InvoiceDetails = () => {
       "Eighty",
       "Ninety",
     ];
-    const g = [
-      "",
-      "Thousand",
-      "Lakh",
-      "Crore",
-    ];
+    const g = ["", "Thousand", "Lakh", "Crore"];
   
     if (typeof num !== "number" || num < 0) return "Invalid input";
   
     if (num === 0) return "Zero";
   
+    // Split the number into integer and decimal parts
+    const [integerPart] = num.toString().split('.'); // Ignore the decimal part
+  
     let words = "";
-    let number = num.toString();
+    let number = integerPart;
     let start = number.length;
     let chunks = [];
   
@@ -138,6 +136,7 @@ export const InvoiceDetails = () => {
   
     return words.trim() + " Only";
   };
+  
   
 
   const printInvoice = () => {

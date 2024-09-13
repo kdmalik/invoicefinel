@@ -61,21 +61,21 @@ export const Dashboard = () => {
         </div>
         <hr />
         <div className="menu">
-        <Link to="/dashboard/invoice" className="menu-link" style={{ padding: '12px 0' }}>
-  <FontAwesomeIcon icon={faFileInvoice} style={{ marginRight: '8px' }} /> Invoice
-</Link>
-
           <Link to="/dashboard/home" className="menu-link" style={{ padding: '12px 0' }}>
   <FontAwesomeIcon icon={faHome} style={{ marginRight: '8px' }} /> Home
 </Link>
-
 <Link to="/dashboard/newinvoice" className="menu-link" style={{ padding: '12px 0' }}>
-  <FontAwesomeIcon icon={faFileInvoice} style={{ marginRight: '8px' }} />New Invoice
+  <FontAwesomeIcon icon={faFileInvoice} style={{ marginRight: '8px' }} />Create New
 </Link>
-
+        <Link to="/dashboard/invoice" className="menu-link" style={{ padding: '12px 0' }}>
+  <FontAwesomeIcon icon={faFileInvoice} style={{ marginRight: '8px' }} /> Invoice
+</Link>
 <Link to="/dashboard/setting" className="menu-link" style={{ padding: '12px 0' }}>
         <FontAwesomeIcon icon={faCog} style={{ marginRight: '8px' }} /> Setting
       </Link>
+
+
+
         </div>
       </div>
       <div className="main-container">

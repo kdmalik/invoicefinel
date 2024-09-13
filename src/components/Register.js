@@ -6,11 +6,12 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons"; // Import spinner icon
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Register = () => {
   const inputlogo = useRef(null);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -32,7 +33,7 @@ export const Register = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((newuser) => {
         const date = new Date().getTime();
-        const storageRef = ref(storage, `${displayName + date}`);
+        const storageRef = ref(storage, `${displayName}`);
         uploadBytesResumable(storageRef, file).then(() => {
           getDownloadURL(storageRef).then((downloadedUrl) => {
             updateProfile(newuser.user, {
@@ -47,7 +48,6 @@ export const Register = () => {
               photoURL: downloadedUrl,
             });
 
-            // Get JWT token and store it with expiry time
             newuser.user.getIdToken(true).then((token) => {
               console.log("JWT Token:", token);
               localStorage.setItem("jwtToken", token);
@@ -56,11 +56,11 @@ export const Register = () => {
               localStorage.setItem("email", newuser.user.email);
               localStorage.setItem("uid", newuser.user.uid);
 
-              // Set an expiry time for the token (4 days from now)
               const expiryTime =
-                new Date().getTime() + 4 * 24 * 60 * 60 * 1000; // 4 days in milliseconds
+                new Date().getTime() + 4 * 24 * 60 * 60 * 1000;
               localStorage.setItem("jwtExpiry", expiryTime);
 
+              toast.success("Registration Successful!");
               navigate("/dashboard");
               setLoading(false);
             });
@@ -70,6 +70,16 @@ export const Register = () => {
       .catch((err) => {
         console.log(err);
         setLoading(false);
+
+        // Display error message if email already exists
+        if (err.code === "auth/email-already-in-use") {
+          toast.error("This email is already in use. Please try another one.", {
+            position: "bottom-center",
+            autoClose: 3000, // Auto close after 3 seconds
+          });
+        } else {
+          toast.error("Registration failed. Please try again.");
+        }
       });
   };
 
@@ -109,14 +119,15 @@ export const Register = () => {
               ref={inputlogo}
             />
             <input
-              className="login-input"
+              className="login-input  hover:bg-blue-300"
               type="button"
               value="Select Your Logo"
               onClick={() => inputlogo.current.click()}
             />
             {imagUrl && <img className="image-preview" src={imagUrl} alt="preview" />}
             <button className="login-input login-btn" type="submit" disabled={isLoading}>
-              {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : "Submit"}
+              {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : ""}
+              Submit
             </button>
           </form>
           <Link to="/login" className="register-link">
@@ -124,6 +135,7 @@ export const Register = () => {
           </Link>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

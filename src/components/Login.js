@@ -86,8 +86,8 @@ export const Login = () => {
               Login
             </button>
           </form>
-          <Link to="/register" className="register-link">
-            <href>Create an Account</href>
+          <Link to="/register" className="register-link ">
+            <href >Create an Account</href>
           </Link>
         </div>
 
